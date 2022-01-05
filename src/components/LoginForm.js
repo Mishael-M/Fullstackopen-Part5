@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import loginService from '../services/login';
 import blogService from '../services/blogs';
 import Notification from './Notification';
+import PropTypes from 'prop-types';
 
-const Login = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
+const LoginForm = ({
   setUser,
   errorMessage,
   setErrorMessage,
@@ -15,6 +12,9 @@ const Login = ({
   setErrorState,
   setBlogs,
 }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -31,7 +31,7 @@ const Login = ({
       setErrorMessage('');
       setErrorState(null);
       const response = await blogService.getAll();
-      setBlogs(response);
+      setBlogs(response.sort((a, b) => b.likes - a.likes));
     } catch (exception) {
       setErrorMessage('Wrong Username or Password');
       setErrorState(true);
@@ -71,4 +71,11 @@ const Login = ({
   );
 };
 
-export default Login;
+LoginForm.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
+  setErrorState: PropTypes.func.isRequired,
+  setBlogs: PropTypes.func.isRequired,
+};
+
+export default LoginForm;

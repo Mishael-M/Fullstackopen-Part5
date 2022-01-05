@@ -36,10 +36,8 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
   };
 
   const deleteBlog = async () => {
-    console.log('user', user.username, 'blog user', blog);
     if (window.confirm(`Remove blog: ${blog.title} by ${blog.author}`)) {
       const response = await blogService.delete(blog.id);
-      console.log(response);
       setBlogs(blogs.filter((blog) => blog.id !== response.id));
     }
   };
@@ -51,8 +49,9 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
         Likes {likes} <button onClick={increaseLike}>Like</button>
       </p>
       <p>{user.name}</p>
-      <button onClick={deleteBlog}>Delete</button>
-      {/* {blog.user.id === user.id ? <button>Delete</button> : null} */}
+      {blog.user.username === user.username ? (
+        <button onClick={deleteBlog}>Delete</button>
+      ) : null}
     </>
   );
   return (

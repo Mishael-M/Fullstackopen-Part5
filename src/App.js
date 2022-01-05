@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
-import Login from './components/Login';
+import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
 import Togglable from './components/Togglable';
@@ -8,11 +8,9 @@ import BlogForm from './components/BlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [newBlog, setNewBlog] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [errorState, setErrorState] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -30,7 +28,7 @@ const App = () => {
         try {
           const blogs = await blogService.getAll();
           setBlogs(blogs.sort((a, b) => b.likes - a.likes));
-        } catch {
+        } catch (e) {
           setUser(null);
         }
       })();
@@ -68,11 +66,7 @@ const App = () => {
   return (
     <div>
       {user === null ? (
-        <Login
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
+        <LoginForm
           errorMessage={errorMessage}
           errorState={errorState}
           setErrorMessage={setErrorMessage}
