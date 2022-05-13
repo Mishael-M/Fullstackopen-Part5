@@ -63,6 +63,16 @@ const App = () => {
     </Togglable>
   );
 
+  const updateLikesOf = async (id) => {
+    const blog = blogs.find((b) => b.id === id);
+    const changedBlog = { ...blog, likes: blog.likes + 1 };
+    await blogService.update(blog.id, changedBlog);
+    await setBlogs(blogs.map((blog) => (blog.id === id ? changedBlog : blog)));
+    const updatedBlogs = await blogService.getAll();
+    const newBlogs = [...updatedBlogs].sort((a, b) => b.likes - a.likes);
+    await setBlogs(newBlogs);
+  };
+
   return (
     <div>
       {user === null ? (
@@ -91,6 +101,7 @@ const App = () => {
                 user={user}
                 blogs={blogs}
                 setBlogs={setBlogs}
+                updateLikes={() => updateLikesOf(blog.id)}
               />
             ))}
           </div>

@@ -19,6 +19,18 @@ const BlogForm = ({ createBlog }) => {
     setBlogUrl('');
   };
 
+  const handleBlogTitleChange = (event) => {
+    setBlogTitle(event.target.value);
+  };
+
+  const handleBlogAuthorChange = (event) => {
+    setBlogAuthor(event.target.value);
+  };
+
+  const handleBlogURLChange = (event) => {
+    setBlogUrl(event.target.value);
+  };
+
   return (
     <div>
       <h2>Create New Blog</h2>
@@ -29,7 +41,9 @@ const BlogForm = ({ createBlog }) => {
             type='text'
             value={blogTitle}
             name='Title'
-            onChange={({ target }) => setBlogTitle(target.value)}
+            onChange={handleBlogTitleChange}
+            id='title-input'
+            placeholder='write here note content'
           />
         </div>
         <div>
@@ -38,7 +52,8 @@ const BlogForm = ({ createBlog }) => {
             type='text'
             value={blogAuthor}
             name='Author'
-            onChange={({ target }) => setBlogAuthor(target.value)}
+            onChange={handleBlogAuthorChange}
+            id='author-input'
           />
         </div>
         <div>
@@ -47,7 +62,8 @@ const BlogForm = ({ createBlog }) => {
             type='text'
             value={blogUrl}
             name='Url'
-            onChange={({ target }) => setBlogUrl(target.value)}
+            onChange={handleBlogURLChange}
+            id='url-input'
           />
         </div>
         <button type='submit'>Create</button>

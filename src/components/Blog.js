@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
-const Blog = ({ blog, user, blogs, setBlogs }) => {
+const Blog = ({ blog, user, blogs, setBlogs, updateLikes }) => {
   const [visible, setVisible] = useState(false);
-  const [likes, setLikes] = useState(blog.likes);
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -17,24 +16,6 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
     marginBottom: 5,
   };
 
-  const increaseLike = async () => {
-    const newLikes = likes + 1;
-    const updatedBlog = {
-      user: user.id,
-      likes: newLikes,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url,
-    };
-    const response = await blogService.update(blog.id, updatedBlog);
-    await setLikes(response.likes);
-    const blogIndex = blogs.findIndex((obj) => obj.id === blog.id);
-    blogs[blogIndex].likes = newLikes;
-    await setBlogs(blogs);
-    const newBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
-    await setBlogs(newBlogs);
-  };
-
   const deleteBlog = async () => {
     if (window.confirm(`Remove blog: ${blog.title} by ${blog.author}`)) {
       const response = await blogService.delete(blog.id);
@@ -46,7 +27,10 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
     <>
       <p>{blog.url}</p>
       <p>
-        Likes {likes} <button onClick={increaseLike}>Like</button>
+        Likes {blog.likes}{' '}
+        <button onClick={updateLikes} className='likeButton'>
+          Like
+        </button>
       </p>
       <p>{user.name}</p>
       {blog.user.username === user.username ? (
@@ -54,12 +38,15 @@ const Blog = ({ blog, user, blogs, setBlogs }) => {
       ) : null}
     </>
   );
+
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {blog.title} {blog.author}{' '}
       {visible ? (
         <>
-          <button onClick={toggleVisibility}>Hide</button>
+          <button onClick={toggleVisibility} className='togglableContent'>
+            Hide
+          </button>
           {showBlog()}
         </>
       ) : (
