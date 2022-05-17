@@ -14,7 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser');
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
@@ -36,7 +36,7 @@ const App = () => {
   }, [user]);
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedNoteappUser');
+    window.localStorage.removeItem('loggedBlogappUser');
     setUser(null);
   };
 
@@ -89,13 +89,19 @@ const App = () => {
           <h2>blogs</h2>
           <p>
             {user.name} is logged in
-            <button onClick={handleLogout}>Logout</button>
+            <button onClick={handleLogout} id='logout-button'>
+              Logout
+            </button>
           </p>
           <Notification message={errorMessage} error={errorState} />
           {blogForm()}
-          <div>
+          <div className='blog'>
             {blogs.map((blog) => (
               <Blog
+                errorMessage={errorMessage}
+                errorState={errorState}
+                setErrorMessage={setErrorMessage}
+                setErrorState={setErrorState}
                 key={blog.id}
                 blog={blog}
                 user={user}

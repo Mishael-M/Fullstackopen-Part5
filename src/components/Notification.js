@@ -24,10 +24,18 @@ const Notification = (props) => {
     return null;
   }
   if (props.error === true) {
-    return <div style={errorStyle}>{props.message}</div>;
+    return (
+      <div style={errorStyle} className='error'>
+        {props.message}
+      </div>
+    );
   }
 
-  return <div style={acceptedStyle}>{props.message}</div>;
+  return (
+    <div style={acceptedStyle} className='error'>
+      {props.message}
+    </div>
+  );
 };
 
 export default Notification;

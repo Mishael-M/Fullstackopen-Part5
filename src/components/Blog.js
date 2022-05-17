@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs';
-const Blog = ({ blog, user, blogs, setBlogs, updateLikes }) => {
+const Blog = ({
+  setErrorMessage,
+  setErrorState,
+  blog,
+  user,
+  blogs,
+  setBlogs,
+  updateLikes,
+}) => {
   const [visible, setVisible] = useState(false);
 
   const toggleVisibility = () => {
@@ -18,7 +26,15 @@ const Blog = ({ blog, user, blogs, setBlogs, updateLikes }) => {
 
   const deleteBlog = async () => {
     if (window.confirm(`Remove blog: ${blog.title} by ${blog.author}`)) {
-      const response = await blogService.delete(blog.id);
+      const response = await blogService.deleteBlog(blog.id);
+      setErrorMessage(
+        `The blog ${response.title} by ${response.author} has been deleted!`
+      );
+      setErrorState(true);
+      setTimeout(() => {
+        setErrorMessage(null);
+        setErrorState(null);
+      }, 5000);
       setBlogs(blogs.filter((blog) => blog.id !== response.id));
     }
   };
@@ -32,9 +48,11 @@ const Blog = ({ blog, user, blogs, setBlogs, updateLikes }) => {
           Like
         </button>
       </p>
-      <p>{user.name}</p>
+      <p>{blog.user.name}</p>
       {blog.user.username === user.username ? (
-        <button onClick={deleteBlog}>Delete</button>
+        <button onClick={deleteBlog} id='deleteButton'>
+          Delete
+        </button>
       ) : null}
     </>
   );
@@ -50,7 +68,9 @@ const Blog = ({ blog, user, blogs, setBlogs, updateLikes }) => {
           {showBlog()}
         </>
       ) : (
-        <button onClick={toggleVisibility}>View</button>
+        <button onClick={toggleVisibility} id='viewButton'>
+          View
+        </button>
       )}
     </div>
   );
