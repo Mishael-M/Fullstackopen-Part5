@@ -95,7 +95,7 @@ const App = () => {
           </p>
           <Notification message={errorMessage} error={errorState} />
           {blogForm()}
-          <div className='blog'>
+          <div>
             {blogs.map((blog) => (
               <Blog
                 errorMessage={errorMessage}

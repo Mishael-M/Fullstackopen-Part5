@@ -147,10 +147,10 @@ describe('Blog app', function () {
         cy.wait(500);
 
         cy.get('.blog')
-          .eq(1)
+          .eq(0)
           .should('contain', 'The title with the most likes');
         cy.get('.blog')
-          .eq(2)
+          .eq(1)
           .should('contain', 'The title with the second most likes');
       });
     });
